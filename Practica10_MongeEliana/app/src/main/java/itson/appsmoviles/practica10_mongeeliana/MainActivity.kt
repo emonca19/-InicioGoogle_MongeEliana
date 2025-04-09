@@ -22,6 +22,7 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
+import androidx.lifecycle.lifecycleScope
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
@@ -62,6 +63,9 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
             }
+        }
+        btnLoginGoogle.setOnClickListener {
+            iniciarSesionConGoogle()
         }
 
 
@@ -142,40 +146,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Esta función requiere Jetpack Compose para usarse correctamente
-    @SuppressLint("CoroutineCreationDuringComposition")
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    @Composable
-    fun loginGoogle() {
-        val context = LocalContext.current
-        val coroutineScope: CoroutineScope = rememberCoroutineScope()
-        val credentialManager = CredentialManager.create(context)
+    fun iniciarSesionConGoogle() {
+        val credentialManager = CredentialManager.create(this)
 
-        val signInWithGoogleOption: GetSignInWithGoogleOption =
-            GetSignInWithGoogleOption.Builder(context.getString(R.string.web_client))
-                .setNonce("nonce")
-                .build()
+        val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(getString(R.string.web_client))
+            .setNonce("nonce")
+            .build()
 
-        val request: GetCredentialRequest = GetCredentialRequest.Builder()
+        val request = GetCredentialRequest.Builder()
             .addCredentialOption(signInWithGoogleOption)
             .build()
 
-        coroutineScope.launch {
+        lifecycleScope.launch {
             try {
                 val result = credentialManager.getCredential(
                     request = request,
-                    context = context,
+                    context = this@MainActivity,
                 )
-                (context as? MainActivity)?.handleSignIn(result)
+                handleSignIn(result)
             } catch (e: GetCredentialException) {
                 Toast.makeText(
-                    context,
-                    "Error al obtener la credencial $e",
+                    this@MainActivity,
+                    "Error al obtener la credencial: $e",
                     Toast.LENGTH_LONG
                 ).show()
             }
         }
     }
+
 
 
     fun login_firebase(correo: String, pass: String){
