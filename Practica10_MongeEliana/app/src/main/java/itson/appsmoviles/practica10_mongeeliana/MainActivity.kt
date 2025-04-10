@@ -69,7 +69,16 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        btnCrearCuenta.setOnClickListener {
+            val correo = etCorreo.text.toString()
+            val pass = etPassword.text.toString()
 
+            if (correo.isNotEmpty() && pass.isNotEmpty()) {
+                crearCuentaFirebase(correo, pass)
+            } else {
+                Toast.makeText(this, "Completa los campos", Toast.LENGTH_SHORT).show()
+            }
+        }
 
 
     }
@@ -195,4 +204,24 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
+
+    fun crearCuentaFirebase(correo: String, pass: String) {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo, pass)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(applicationContext, Bienvenida::class.java)
+                    intent.putExtra("Correo", task.result.user?.email)
+                    intent.putExtra("Proveedor", "Email")
+                    startActivity(intent)
+                    guardar_sesion(task.result.user?.email.toString(), "Usuario/Contraseña")
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        "Error al crear la cuenta: ${task.exception?.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+    }
+
 }
