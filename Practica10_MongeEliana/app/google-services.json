@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "1044945891958",
-    "project_id": "practica-10-f869e",
-    "storage_bucket": "practica-10-f869e.firebasestorage.app"
+    "project_number": "128712037798",
+    "project_id": "hip-wharf-456204-d4",
+    "storage_bucket": "hip-wharf-456204-d4.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1044945891958:android:002c97b1020c86faafe557",
+        "mobilesdk_app_id": "1:128712037798:android:79b81890f2d83e8cb82b67",
         "android_client_info": {
           "package_name": "itson.appsmoviles.practica10_mongeeliana"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC7Xzn2Yibf-VBW1pRFpSkbR0V7ZTD-INU"
+          "current_key": "AIzaSyBBoQYGC9fe2fOQQ1L9HVVIfbSHW-M2zqg"
         }
       ],
       "services": {
